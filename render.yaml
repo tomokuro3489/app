@@ -1,0 +1,21 @@
+databases:
+  - name: app2_DB
+    databaseName: postgres://app2_db_user:1zwDvoboVDkxgLBm7rwiNsVVqYETFgZ4@dpg-cf5noj5a499d72sdt1lg-a/app2_db
+    user: app2
+    region: singapore
+
+services:
+  - type: web
+    name: app2
+    env: ruby
+    region: singapore
+    plan: free
+    buildCommand: "./bin/render-build.sh"
+    startCommand: "bundle exec puma -C config/puma.rb"
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: spp2_DB
+          property: connectionString
+      - key: RAILS_MASTER_KEY
+        sync: false
